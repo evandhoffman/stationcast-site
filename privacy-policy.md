@@ -199,7 +199,7 @@ If you are a California resident, you have the right to:
 
 We do not sell your personal information.
 
-To exercise these rights, contact us at privacy@stationcast.app.
+To exercise these rights, contact us at evandhoffman@gmail.com.
 
 ### European Union (GDPR)
 
@@ -211,7 +211,7 @@ If you are in the EU, your legal bases for processing include:
 
 You have the right to access, correct, delete, or port your data, and to
 object to processing. To exercise GDPR rights, contact us at
-privacy@stationcast.app.
+evandhoffman@gmail.com.
 
 ---
 
