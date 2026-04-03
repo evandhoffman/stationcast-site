@@ -1,3 +1,9 @@
+---
+layout: default
+title: Privacy Policy
+permalink: /privacy-policy.html
+---
+
 # Privacy Policy for StationCast
 
 **Last Updated: April 3, 2026**
