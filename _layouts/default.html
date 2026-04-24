@@ -4,6 +4,30 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ page.title }} — StationCast</title>
+  <meta name="description" content="{{ page.description | default: site.description }}">
+
+  <!-- Canonical -->
+  <link rel="canonical" href="{{ site.url }}{{ page.url }}">
+
+  <!-- OpenGraph -->
+  <meta property="og:type"        content="website">
+  <meta property="og:site_name"   content="StationCast">
+  <meta property="og:title"       content="{{ page.title }} — StationCast">
+  <meta property="og:description" content="{{ page.description | default: site.description }}">
+  <meta property="og:url"         content="{{ site.url }}{{ page.url }}">
+  <meta property="og:image"       content="{{ site.url }}/assets/og-image.png">
+  <meta property="og:image:width"  content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt"   content="StationCast — Weather that feels like a place">
+
+  <!-- Twitter / X Card -->
+  <meta name="twitter:card"        content="summary_large_image">
+  <meta name="twitter:title"       content="{{ page.title }} — StationCast">
+  <meta name="twitter:description" content="{{ page.description | default: site.description }}">
+  <meta name="twitter:image"       content="{{ site.url }}/assets/og-image.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
