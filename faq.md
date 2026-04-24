@@ -40,7 +40,9 @@ A personal weather station is a privately owned set of weather instruments — t
 
 ## Is this a forecast app?
 
-No. Every reading you see in StationCast was actually measured by the station. There are no forecasts, no model blends, and no estimates. The daily high and low labeled **today so far** are the observed maximum and minimum since midnight — not a predicted range for the day.
+No. StationCast is designed to tell you what conditions are actually like at a specific place, right now — not what a model thinks they might be later. Every reading was measured by a real sensor at that location. There are no forecasts, no model blends, and no estimates.
+
+The daily high and low labeled **today so far** are the observed maximum and minimum since midnight — not a predicted range. If you want to know what it feels like outside your front door, StationCast gets you as close to that as possible in real time.
 
 ## What does "feels like" mean?
 
