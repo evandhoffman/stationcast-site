@@ -54,7 +54,9 @@ Not all personal weather stations include UV or solar radiation sensors. When a 
 
 ## Why does the app ask for my location?
 
-Location is used only for **station discovery** — to sort nearby stations by distance and show how far each one is from you. Your location is never sent to our servers and is not stored or logged anywhere. If you deny location access, station discovery still works; you just won't see distance information or proximity sorting.
+Location access is entirely optional — the app is fully functional without it. When you grant access, it's used only for convenience features: sorting nearby stations by distance and showing how far each one is from you. If you decline, you can still search for and add any station manually; you just won't see distance information or proximity-based sorting.
+
+Your location is never sent to our servers and is not stored or logged anywhere.
 
 You can change location permissions at any time in **Settings → Privacy & Security → Location Services → StationCast**.
 
