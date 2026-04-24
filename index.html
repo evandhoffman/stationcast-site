@@ -1,0 +1,360 @@
+---
+layout: null
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StationCast — Personal Weather Station App</title>
+  <meta name="description" content="StationCast turns your personal weather station into a beautiful, glanceable weather experience on iPhone. Real readings, not forecasts.">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --glass-bg: rgba(255, 255, 255, 0.10);
+      --glass-border: rgba(255, 255, 255, 0.22);
+      --glass-inset: rgba(255, 255, 255, 0.18);
+      --text-primary: #ffffff;
+      --text-secondary: rgba(255, 255, 255, 0.72);
+      --text-tertiary: rgba(255, 255, 255, 0.45);
+    }
+
+    html { -webkit-text-size-adjust: 100%; }
+
+    body {
+      min-height: 100vh;
+      background: linear-gradient(165deg, #152d4a 0%, #1c5280 42%, #3a80b8 80%, #5499cc 100%);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif;
+      color: var(--text-primary);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Atmospheric sun glow */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -15%;
+      right: -5%;
+      width: 55vw;
+      height: 55vw;
+      max-width: 500px;
+      max-height: 500px;
+      background: radial-gradient(circle, rgba(120, 190, 255, 0.18) 0%, transparent 65%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 460px;
+      margin: 0 auto;
+      padding: 0 18px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* — Nav — */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 26px 0 20px;
+    }
+
+    .wordmark {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+
+    nav a {
+      font-size: 13px;
+      color: var(--text-secondary);
+      text-decoration: none;
+    }
+    nav a:hover { color: white; }
+
+    /* — Glass card base — */
+    .glass {
+      background: var(--glass-bg);
+      backdrop-filter: blur(28px) saturate(160%);
+      -webkit-backdrop-filter: blur(28px) saturate(160%);
+      border: 1px solid var(--glass-border);
+      border-radius: 22px;
+      box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.22),
+        inset 0 1px 0 var(--glass-inset);
+    }
+
+    /* — Hero card — */
+    .hero-card {
+      padding: 28px 24px 24px;
+      text-align: center;
+      margin-bottom: 10px;
+      position: relative;
+    }
+
+    .share-btn {
+      position: absolute;
+      top: 16px;
+      right: 18px;
+      opacity: 0.55;
+      line-height: 1;
+    }
+    .share-btn svg { display: block; }
+
+    .location-name {
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: -0.2px;
+      margin-bottom: 3px;
+    }
+
+    .station-meta {
+      font-size: 12px;
+      color: var(--text-secondary);
+      letter-spacing: 0.1px;
+      margin-bottom: 22px;
+    }
+    .station-meta .refresh-icon { font-style: normal; }
+
+    .temperature-display {
+      font-size: 92px;
+      font-weight: 200;
+      line-height: 1;
+      letter-spacing: -5px;
+      margin-bottom: 10px;
+    }
+
+    .condition-row {
+      font-size: 18px;
+      font-weight: 400;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      margin-bottom: 6px;
+    }
+
+    .hilo-row {
+      font-size: 13px;
+      color: var(--text-secondary);
+    }
+
+    /* — Metric grid — */
+    .metric-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 4px;
+    }
+
+    .metric-card {
+      padding: 14px 15px 13px;
+    }
+
+    .metric-label {
+      font-size: 10.5px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.9px;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-bottom: 7px;
+    }
+
+    .metric-value {
+      font-size: 27px;
+      font-weight: 300;
+      letter-spacing: -0.5px;
+      line-height: 1;
+    }
+
+    .metric-unit {
+      font-size: 15px;
+      font-weight: 400;
+      letter-spacing: 0;
+    }
+
+    .metric-sub {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 5px;
+    }
+
+    /* — Sample label — */
+    .sample-label {
+      text-align: center;
+      font-size: 11px;
+      color: var(--text-tertiary);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-top: 10px;
+      margin-bottom: 2px;
+    }
+
+    /* — Tagline section — */
+    .tagline-section {
+      text-align: center;
+      padding: 30px 4px 24px;
+    }
+
+    .tagline {
+      font-size: 27px;
+      font-weight: 700;
+      letter-spacing: -0.6px;
+      line-height: 1.18;
+      margin-bottom: 14px;
+    }
+
+    .description {
+      font-size: 15px;
+      line-height: 1.65;
+      color: var(--text-secondary);
+    }
+
+    /* — CTA — */
+    .cta-section {
+      text-align: center;
+      padding: 6px 0 44px;
+    }
+
+    .beta-badge {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.13);
+      border: 1px solid rgba(255, 255, 255, 0.28);
+      border-radius: 100px;
+      padding: 4px 13px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .testflight-btn {
+      display: block;
+      max-width: 260px;
+      margin: 0 auto 12px;
+      background: white;
+      color: #1a3a5c;
+      border-radius: 14px;
+      padding: 15px 28px;
+      font-size: 16px;
+      font-weight: 600;
+      text-decoration: none;
+      letter-spacing: -0.2px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+      transition: transform 0.14s ease, box-shadow 0.14s ease;
+    }
+
+    .testflight-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 7px 26px rgba(0, 0, 0, 0.32);
+    }
+
+    .cta-note {
+      font-size: 12px;
+      color: var(--text-tertiary);
+    }
+
+    /* — Footer — */
+    footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 20px 0 36px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    footer a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 13px;
+    }
+    footer a:hover { color: white; }
+
+    .footer-copy {
+      font-size: 12px;
+      color: var(--text-tertiary);
+    }
+
+    @media (max-width: 380px) {
+      .temperature-display { font-size: 78px; }
+      .tagline { font-size: 23px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <nav>
+      <span class="wordmark">StationCast</span>
+      <a href="/privacy-policy">Privacy Policy</a>
+    </nav>
+
+    <!-- Illustrative app preview -->
+    <div class="glass hero-card">
+      <span class="share-btn">
+        <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8.5 1v9.5M8.5 1L5.5 4M8.5 1L11.5 4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M2.5 8v7h12V8" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <div class="location-name">Potts Point</div>
+      <div class="station-meta">INSWPOTT2 &nbsp;·&nbsp; <i class="refresh-icon">↻</i> 11:22 am &nbsp;·&nbsp; 2m ago</div>
+      <div class="temperature-display">69°</div>
+      <div class="condition-row">☀️ Clear</div>
+      <div class="hilo-row">↑73° ↓62° today so far</div>
+    </div>
+
+    <div class="metric-grid">
+      <div class="glass metric-card">
+        <div class="metric-label">💧 Humidity</div>
+        <div class="metric-value">61<span class="metric-unit">%</span></div>
+        <div class="metric-sub">Dew point 56°</div>
+      </div>
+      <div class="glass metric-card">
+        <div class="metric-label">💨 Wind</div>
+        <div class="metric-value">6 <span class="metric-unit">mph</span></div>
+        <div class="metric-sub">Gusts 13 mph</div>
+      </div>
+      <div class="glass metric-card">
+        <div class="metric-label">🔵 Pressure</div>
+        <div class="metric-value">30.48</div>
+        <div class="metric-sub">— Steady</div>
+      </div>
+      <div class="glass metric-card">
+        <div class="metric-label">🌧 Rainfall</div>
+        <div class="metric-value">0.00 <span class="metric-unit">in</span></div>
+        <div class="metric-sub">No rain today</div>
+      </div>
+    </div>
+
+    <div class="sample-label">Sample station · not live data</div>
+
+    <div class="tagline-section">
+      <div class="tagline">Weather that feels<br>like a place.</div>
+      <div class="description">
+        StationCast turns personal weather station data into a beautiful,
+        glanceable experience. Real readings from the station near you —
+        not a forecast, not a blend. Just the weather, from where it actually is.
+      </div>
+    </div>
+
+    <div class="cta-section">
+      <div class="beta-badge">Public Beta</div>
+      <a href="https://testflight.apple.com/join/PLACEHOLDER" class="testflight-btn">Join the Beta on TestFlight</a>
+      <div class="cta-note">iPhone · iOS 26 or later</div>
+    </div>
+
+    <footer>
+      <a href="/privacy-policy">Privacy Policy</a>
+      <span class="footer-copy">&copy; 2026 StationCast</span>
+    </footer>
+
+  </div>
+</body>
+</html>

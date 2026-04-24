@@ -1,8 +1,7 @@
 title: StationCast
-description: Privacy Policy & Legal Documentation
-theme: jekyll-theme-minimal
-baseurl: /stationcast-site
-url: https://evandhoffman.github.io
+description: Personal weather station app for iPhone
+baseurl: ""
+url: https://stationcast.app
 
 markdown: kramdown
 permalink: /:title
@@ -13,4 +12,3 @@ plugins:
 exclude:
   - .gitignore
   - README.md
-  - CNAME
