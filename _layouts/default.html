@@ -1,115 +1,213 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ page.title }} - StationCast</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ page.title }} — StationCast</title>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background: #f9f9f9;
-        }
+    :root {
+      --glass-bg: rgba(255, 255, 255, 0.10);
+      --glass-border: rgba(255, 255, 255, 0.22);
+      --glass-inset: rgba(255, 255, 255, 0.18);
+      --text-primary: #ffffff;
+      --text-secondary: rgba(255, 255, 255, 0.72);
+      --text-tertiary: rgba(255, 255, 255, 0.45);
+    }
 
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 40px 20px;
-            background: white;
-            min-height: 100vh;
-        }
+    html { -webkit-text-size-adjust: 100%; }
 
-        header {
-            margin-bottom: 40px;
-            border-bottom: 2px solid #0066cc;
-            padding-bottom: 20px;
-        }
+    body {
+      min-height: 100vh;
+      background: linear-gradient(165deg, #152d4a 0%, #1c5280 42%, #3a80b8 80%, #5499cc 100%);
+      background-attachment: fixed;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", sans-serif;
+      color: var(--text-primary);
+      -webkit-font-smoothing: antialiased;
+    }
 
-        header h1 {
-            font-size: 28px;
-            margin-bottom: 8px;
-            color: #000;
-        }
+    body::before {
+      content: '';
+      position: fixed;
+      top: -15%;
+      right: -5%;
+      width: 55vw;
+      height: 55vw;
+      max-width: 500px;
+      max-height: 500px;
+      background: radial-gradient(circle, rgba(120, 190, 255, 0.18) 0%, transparent 65%);
+      pointer-events: none;
+      z-index: 0;
+    }
 
-        header p {
-            color: #666;
-            font-size: 14px;
-        }
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 20px 60px;
+      position: relative;
+      z-index: 1;
+    }
 
-        main {
-            line-height: 1.8;
-            color: #333;
-        }
+    /* — Nav — */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 26px 0 28px;
+    }
 
-        h1 { font-size: 28px; margin: 30px 0 15px 0; }
-        h2 { font-size: 22px; margin: 25px 0 12px 0; }
-        h3 { font-size: 18px; margin: 20px 0 10px 0; }
+    .wordmark {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      color: white;
+      text-decoration: none;
+    }
 
-        p { margin-bottom: 15px; }
+    nav a {
+      font-size: 13px;
+      color: var(--text-secondary);
+      text-decoration: none;
+    }
+    nav a:hover { color: white; }
 
-        ul, ol {
-            margin-left: 20px;
-            margin-bottom: 15px;
-        }
+    /* — Glass content card — */
+    .content-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(28px) saturate(160%);
+      -webkit-backdrop-filter: blur(28px) saturate(160%);
+      border: 1px solid var(--glass-border);
+      border-radius: 22px;
+      box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.22),
+        inset 0 1px 0 var(--glass-inset);
+      padding: 40px 44px;
+    }
 
-        li { margin-bottom: 8px; }
+    @media (max-width: 560px) {
+      .content-card { padding: 28px 22px; }
+    }
 
-        strong { font-weight: 600; }
+    /* — Typography — */
+    .content-card h1 {
+      font-size: 26px;
+      font-weight: 700;
+      letter-spacing: -0.4px;
+      margin-bottom: 6px;
+      color: white;
+    }
 
-        code {
-            background: #f4f4f4;
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-family: "Monaco", "Courier New", monospace;
-            font-size: 14px;
-        }
+    .page-meta {
+      font-size: 13px;
+      color: var(--text-secondary);
+      margin-bottom: 32px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    }
 
-        a {
-            color: #0066cc;
-            text-decoration: none;
-        }
+    .content-card h2 {
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: -0.2px;
+      color: white;
+      margin: 32px 0 10px;
+    }
 
-        a:hover {
-            text-decoration: underline;
-        }
+    .content-card h3 {
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--text-secondary);
+      margin: 22px 0 8px;
+    }
 
-        footer {
-            margin-top: 60px;
-            padding-top: 20px;
-            border-top: 1px solid #eee;
-            font-size: 12px;
-            color: #666;
-        }
+    .content-card p {
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      margin-bottom: 14px;
+    }
 
-        .last-updated {
-            color: #999;
-            font-size: 13px;
-            margin-top: 30px;
-        }
-    </style>
+    .content-card ul,
+    .content-card ol {
+      margin: 0 0 14px 20px;
+    }
+
+    .content-card li {
+      font-size: 15px;
+      line-height: 1.65;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+
+    .content-card strong {
+      font-weight: 600;
+      color: white;
+    }
+
+    .content-card a {
+      color: rgba(160, 210, 255, 0.9);
+      text-decoration: none;
+    }
+    .content-card a:hover {
+      color: white;
+      text-decoration: underline;
+    }
+
+    .content-card hr {
+      border: none;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      margin: 28px 0;
+    }
+
+    .content-card code {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 5px;
+      padding: 2px 6px;
+      font-family: "SF Mono", "Monaco", "Courier New", monospace;
+      font-size: 13px;
+    }
+
+    /* — Footer — */
+    footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 0 0;
+      margin-top: 24px;
+    }
+
+    footer a {
+      font-size: 13px;
+      color: var(--text-secondary);
+      text-decoration: none;
+    }
+    footer a:hover { color: white; }
+
+    .footer-copy {
+      font-size: 12px;
+      color: var(--text-tertiary);
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1><a href="/" style="color: inherit; text-decoration: none;">StationCast</a></h1>
-            <p>Legal Documentation</p>
-        </header>
+  <div class="container">
+    <nav>
+      <a href="/" class="wordmark">StationCast</a>
+      <a href="/">← Home</a>
+    </nav>
 
-        <main>
-            {{ content }}
-        </main>
-
-        <footer>
-            <p>&copy; 2026 StationCast. All rights reserved.</p>
-            <p><a href="/">← Back to StationCast</a></p>
-        </footer>
+    <div class="content-card">
+      {{ content }}
     </div>
+
+    <footer>
+      <a href="/privacy-policy">Privacy Policy</a>
+      <span class="footer-copy">&copy; 2026 StationCast</span>
+    </footer>
+  </div>
 </body>
 </html>

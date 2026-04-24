@@ -4,9 +4,9 @@ title: Privacy Policy
 permalink: /privacy-policy.html
 ---
 
-# Privacy Policy for StationCast
+# Privacy Policy
 
-**Last Updated: April 3, 2026**
+<p class="page-meta">Last Updated: April 3, 2026</p>
 
 ## Introduction
 
